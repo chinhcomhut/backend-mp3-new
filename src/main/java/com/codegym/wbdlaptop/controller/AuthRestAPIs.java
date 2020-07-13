@@ -64,7 +64,7 @@ public class AuthRestAPIs {
 
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),
                 userDetails.getId() , userDetails.getName(), userDetails.getEmail(), userDetails.getAvatar() ,
-                userDetails.getAuthorities(), userDetails.getPassword()
+                userDetails.getAuthorities()
         ));
     }
 
@@ -123,23 +123,25 @@ public class AuthRestAPIs {
                     .findByUsername(username)
                     .orElseThrow(
                             () -> new UsernameNotFoundException("User Not Found with -> username:" + username));
+            boolean matches = passwordEncoder.matches(changePasswordForm.getCurrentPassword(), user.getPassword());
+            if (changePasswordForm.getNewPassword() != null) {
+                if (matches) {
+                    user.setPassword(passwordEncoder.encode(changePasswordForm.getNewPassword()));
+                    userService.save(user);
+                } else {
+                    return new ResponseEntity(new ResponseMessage("no"), HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity(new ResponseMessage("yes"), HttpStatus.OK);
         } catch (UsernameNotFoundException exception) {
             return new ResponseEntity<>(new ResponseMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
         }
 
-        boolean matches = passwordEncoder.matches(changePasswordForm.getCurrentPassword(), user.getPassword());
-        if (changePasswordForm.getNewPassword() != null) {
-            if (matches) {
-                user.setPassword(passwordEncoder.encode(changePasswordForm.getNewPassword()));
-                userService.save(user);
-            } else {
-                new ResponseEntity(new ResponseMessage("Change Failed"), HttpStatus.BAD_REQUEST);
-            }
-        }
-        return new ResponseEntity(new ResponseMessage("Change Succeed"), HttpStatus.OK);
-    }
 
     }
+
+
+}
 
 
 
