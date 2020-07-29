@@ -109,7 +109,7 @@ public class AuthRestAPIs {
         user.setRoles(roles);
         userService.save(user);
 
-        return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
     @PutMapping("/change-password")
     public ResponseEntity<?> changePassword(HttpServletRequest request, @Valid @RequestBody ChangePasswordForm changePasswordForm) {
