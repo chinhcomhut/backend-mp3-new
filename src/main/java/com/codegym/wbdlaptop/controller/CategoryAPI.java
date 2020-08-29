@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*",maxAge = 2600000)
 @RestController
 @RequestMapping("/api/auth")
 public class CategoryAPI {
