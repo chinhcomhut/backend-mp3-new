@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,6 +114,11 @@ public class CategoryAPI {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity(songPage, HttpStatus.OK);
+    }
+    @PutMapping("/update-category")
+    public ResponseEntity<?> updatePlayList(@RequestBody Category category) {
+        categoryService.save(category);
+        return new ResponseEntity<>(category,HttpStatus.CREATED);
     }
 
 }
