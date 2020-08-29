@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*",maxAge = 2600000)
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class CategoryAPI {
@@ -52,6 +52,7 @@ public class CategoryAPI {
         if(categoryService.existsByNameCategory(category.getNameCategory())){
             return new ResponseEntity(new ResponseMessage("nocategory"), HttpStatus.OK);
         }
+        categoryService.save(category);
         return new ResponseEntity(new ResponseMessage("yes"),HttpStatus.OK);
     }
     @GetMapping("/category/{id}")
