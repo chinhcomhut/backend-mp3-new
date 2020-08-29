@@ -1,7 +1,9 @@
 package com.codegym.wbdlaptop.service.Impl;
 
 import com.codegym.wbdlaptop.model.Category;
+import com.codegym.wbdlaptop.model.User;
 import com.codegym.wbdlaptop.repository.ICategoryRepository;
+import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
 import com.codegym.wbdlaptop.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     private ICategoryRepository categoryRepository;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
     @Override
     public Boolean existsByNameCategory(String nameCategory) {
         return categoryRepository.existsByNameCategory(nameCategory);
@@ -22,7 +27,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public Page<Category> findAllByUserId(Long userId, Pageable pageable) {
-        return categoryRepository.findAllByUserId(userId,pageable);
+        return categoryRepository.findAllByUserId(userId, pageable);
     }
 
     @Override
@@ -32,11 +37,13 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public void delete(Long id) {
-categoryRepository.deleteById(id);
+        categoryRepository.deleteById(id);
     }
 
     @Override
     public Category save(Category category) {
+        User user = userDetailsService.getCurrentUser();
+        category.setUser(user);
         return categoryRepository.save(category);
     }
 
