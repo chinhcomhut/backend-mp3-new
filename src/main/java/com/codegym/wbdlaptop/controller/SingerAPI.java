@@ -7,6 +7,7 @@ import com.codegym.wbdlaptop.model.User;
 import com.codegym.wbdlaptop.security.service.UserDetailsServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.SingerServiceImpl;
 import com.codegym.wbdlaptop.service.Impl.SongServiceImpl;
+import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -30,7 +32,7 @@ public class SingerAPI {
     @Autowired
     private SongServiceImpl songService;
     @GetMapping("/singer")
-    public ResponseEntity pageSinger(@PageableDefault(sort = "nameSinger", direction = Sort.Direction.ASC)Pageable pageable){
+    public ResponseEntity<?> pageSinger(@PageableDefault(sort = "nameSinger", direction = Sort.Direction.ASC)Pageable pageable){
         Page<Singer> singers = singerService.findAll(pageable);
         if(singers.isEmpty()){
             return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -103,5 +105,13 @@ public class SingerAPI {
         Optional<Singer> singer = singerService.findById(id);
         Page<Song> songPage = songService.findByNameSingerContaining(singer.get().getNameSinger(),pageable);
         return new ResponseEntity(songPage, HttpStatus.OK);
+    }
+    @GetMapping("/list-singer")
+    public ResponseEntity<?> getListSinger(){
+        List<Singer> singerList = singerService.findAllList();
+        if(singerList.isEmpty()){
+            return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(singerList, HttpStatus.OK);
     }
 }
