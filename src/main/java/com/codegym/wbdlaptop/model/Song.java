@@ -14,6 +14,7 @@ public class Song {
     private String nameSong;
     private String avatarSong;
     private String mp3Url;
+    private String nameCategoryTest;
     @Lob
     private String lyrics;
     private String createBy;
@@ -25,7 +26,7 @@ public class Song {
     public Song() {
     }
 
-    public Song(Long id, String nameSinger, String nameCategory, String nameBand, String nameSong, String avatarSong, String mp3Url, String lyrics, String createBy, int likeSong, int listenSong, User user) {
+    public Song(Long id, String nameSinger, String nameCategoryTest,String nameCategory, String nameBand, String nameSong, String avatarSong, String mp3Url, String lyrics, String createBy, int likeSong, int listenSong, User user) {
         this.id = id;
         this.nameSinger = nameSinger;
         this.nameCategory = nameCategory;
@@ -38,6 +39,15 @@ public class Song {
         this.likeSong = likeSong;
         this.listenSong = listenSong;
         this.user = user;
+        this.nameCategoryTest = nameCategoryTest;
+    }
+
+    public String getNameCategoryTest() {
+        return nameCategoryTest;
+    }
+
+    public void setNameCategoryTest(String nameCategoryTest) {
+        this.nameCategoryTest = nameCategoryTest;
     }
 
     public Long getId() {
